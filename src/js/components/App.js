@@ -1,10 +1,14 @@
 import React, { Component } from 'react'; 
 import { View, Text} from 'react-native';
+import { Navigator } from 'react-native';
 
 const Cabecera = require('./Cabecera');
 const Tablero = require('./Tablero');
 
 var TresEnRayaStore = require('../stores/TresEnRayaStores');
+
+import IndexScene from '../../../inicio'; 
+import PartidaScene from '../../../partida';
 
 function getAppStateFromStore() {
 	return {
@@ -37,12 +41,34 @@ var App = React.createClass({
   	},
 	render: function () {
 		var texto = "Turno del " + TresEnRayaStore.getTurno();
+		const routes = [
+			{title: 'Index', index: 0},
+			{title: 'Partida', index: 1}, 
+		];
 		return (
-		<View style={{flex: 1, margin: 10}}>
-			<Cabecera texto={texto}/>
-			<Tablero valores={this.state.valores} ganador={this.state.ganador}/>
-			<Text>Número de movimientos : {TresEnRayaStore.getMoves()}</Text>
-		</View>
+		<Navigator
+			initialRoute={routes[0]} 
+			initialRouteStack={routes} 
+			renderScene={(route, navigator) => {
+				var onForward = function(){
+					const nextIndex = route.index + 1; 
+					if(typeof routes[nextIndex] == "object"){
+						navigator.push(routes[nextIndex]) 
+					}
+				}
+				var onBack = function(){
+				if (route.index > 0){ 
+					navigator.pop();
+				} 
+			}
+			switch(route.index){ 
+				case 0:
+					return <IndexScene onForward={onForward} onBack={onBack} /> 
+				case 1:
+					return <PartidaScene onForward={onForward} onBack={onBack} /> 
+			}
+			}} 
+		/>
 		)
 	}
 });

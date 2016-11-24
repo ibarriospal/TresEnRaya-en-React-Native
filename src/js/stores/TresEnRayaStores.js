@@ -117,6 +117,15 @@ var TresEnRayaStore = Object.assign({}, EventEmitter.prototype, {
  	},
  	emitChange() {
  		this.emit(Constants.CHANGE_EVENT);
+ 	},
+ 	getState() {
+ 		return (
+ 			turno: turno,
+ 			valoresTablero: valoresTablero,
+ 			ganador: ganador,
+ 			empate: empate,
+ 			moves: moves
+ 		);
  	}
 });
 
