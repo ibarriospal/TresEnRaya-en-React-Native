@@ -13,5 +13,15 @@ module.exports = {
 		TresEnRayaDispatcher.dispatch({
 			type : Constants.ActionTypes.REINICIAR_JUEGO
 		});
+	},
+	saveJuego: function () {
+		TresEnRayaDispatcher.dispatch({
+			type : Constants.ActionTypes.SAVE_JUEGO
+		});
+	},
+	loadJuego: function () {
+		TresEnRayaDispatcher.dispatch({
+			type : Constants.ActionTypes.LOAD_JUEGO
+		});
 	}
 };

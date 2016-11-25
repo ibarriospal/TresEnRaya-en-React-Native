@@ -1,5 +1,7 @@
 const EventEmitter = require('events').EventEmitter;
 
+import { View, Text, Navigator, AsyncStorage} from 'react-native';
+
 var TresEnRayaDispatcher = require('../dispatchers/TresEnRayaDispatcher');
 var Constants = require('../constants/TresEnRayaConstants');
 
@@ -8,12 +10,6 @@ var valoresTablero = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']];
 var ganador = false;
 var empate = false;
 var moves = 0;
-
-var turno1 = Constants.JUGADORX;
-var valoresTablero1 = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']];
-var ganador1 = false;
-var empate1 = false;
-var moves1 = 0;
 
 function checkWinner (values, nuevoValor) {
 	//Compruebo filas
@@ -169,6 +165,45 @@ TresEnRayaDispatcher.register(function(payload) {
 		    moves = 0;
 		    TresEnRayaStore.emitChange();
 		    break;
+		case Constants.ActionTypes.SAVE_JUEGO:
+				AsyncStorage.setItem("Turno", TresEnRayaStore.getTurno());
+				AsyncStorage.setItem("Moves", JSON.stringify(TresEnRayaStore.getMoves()));
+				AsyncStorage.setItem("Ganador", JSON.stringify(TresEnRayaStore.getGanador()));
+				AsyncStorage.setItem("Empate", JSON.stringify(TresEnRayaStore.getEmpate()));
+				AsyncStorage.setItem("Valores", JSON.stringify(TresEnRayaStore.getValores()));
+			break;
+		case Constants.ActionTypes.LOAD_JUEGO:
+				AsyncStorage.getItem("Turno").then((value) =>
+	          	{
+	          		turno = JSON.parse(value);
+	          		TresEnRayaStore.emitChange();
+	            }
+	       	)
+    		AsyncStorage.getItem("Moves").then( (value) =>
+	          	{
+	          		moves = JSON.parse(value);
+	          		TresEnRayaStore.emitChange();
+	    		}
+	    	)
+    		AsyncStorage.getItem("Ganador").then( (value) =>
+	          	{
+	          		Ganador = JSON.parse(value);
+	          		TresEnRayaStore.emitChange();
+	    		}
+	    	)
+	    	AsyncStorage.getItem("Empate").then( (value) =>
+	          	{
+	          		Empate = JSON.parse(value);
+	          		TresEnRayaStore.emitChange();
+	    		}
+	    	)
+	    	AsyncStorage.getItem("Valores").then( (value) =>
+	          	{
+	          		valoresTablero = JSON.parse(value);
+	          		TresEnRayaStore.emitChange();
+	    		}
+	    	)
+			break;
  	}
 });
 

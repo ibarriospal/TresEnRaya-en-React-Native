@@ -3,27 +3,13 @@ import { View, Text, Navigator, AppRegistry, AsyncStorage,StyleSheet, TouchableO
 import MyButton from './src/js/components/MyButton';
 
 var PartidaScene = require('./partida');
+var TresEnRayaActions = require('./src/js/actions/TresEnRayaActions');
 
 var IndexScene = React.createClass({ 
-	loadData: function(){
-    	AsyncStorage.getItem("Turno")
-  		.then( (value) =>
-          	{
-      		this.setState({Turno:value})
-            return AsyncStorage.getItem("Moves")
-          	}
-    	)	
-    	.then( (value) =>
-          	{
-  			return this.setState({Moves: value})
-    		}
-    	).done();
-  	},
 	render: function(){
 		return ( 
 			<View style={{flex: 1, margin: 10}}>
 				<MyButton onPress={this.props.onForward} text={"Iniciar partida"} /> 
-				<MyButton onPress={this.loadData} text={"Cargar partida"} /> 
 			</View>
 		) 
 	}
