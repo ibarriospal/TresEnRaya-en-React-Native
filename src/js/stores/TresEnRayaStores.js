@@ -1,6 +1,6 @@
 const EventEmitter = require('events').EventEmitter;
 
-import { View, Text, Navigator, AsyncStorage} from 'react-native';
+import { View, Text, ListView, Navigator, AsyncStorage} from 'react-native';
 
 var TresEnRayaDispatcher = require('../dispatchers/TresEnRayaDispatcher');
 var Constants = require('../constants/TresEnRayaConstants');
@@ -10,6 +10,9 @@ var valoresTablero = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']];
 var ganador = false;
 var empate = false;
 var moves = 0;
+
+var movement = "";
+const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 function checkWinner (values, nuevoValor) {
 	//Compruebo filas
@@ -109,7 +112,12 @@ var TresEnRayaStore = Object.assign({}, EventEmitter.prototype, {
     getMoves: function(){
       return moves;
 	},
-
+	getDs: function(){
+		return ds;
+	},
+	getMovement: function(){
+		return movement;
+	},
  	addChangeListener(callback) {
  		this.on(Constants.CHANGE_EVENT, callback);
  	},
@@ -125,7 +133,9 @@ var TresEnRayaStore = Object.assign({}, EventEmitter.prototype, {
  			valoresTablero: valoresTablero,
  			ganador: ganador,
  			empate: empate,
- 			moves: moves
+ 			moves: moves,
+ 			movement: movement,
+ 			ds: ds
  		);
  	},
  	setState(ganador,empate,moves) {
@@ -134,13 +144,6 @@ var TresEnRayaStore = Object.assign({}, EventEmitter.prototype, {
  		ganador = ganador;
  		empate = empate;
  		moves = moves;
- 	},
- 	reiniciar() {
- 		turno = Constants.JUGADORX;
-		valoresTablero = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']];
-		ganador = false;
-		empate = false;
-		moves = 0;
  	}
 });
 
@@ -155,6 +158,13 @@ TresEnRayaDispatcher.register(function(payload) {
  				turno = turno === Constants.JUGADORX ? Constants.JUGADOR0 : Constants.JUGADORX;
  			}
  			moves++;
+ 			movement = "El jugador de las " + nuevoValor + " seleccionó la casilla [" +payload.x +"," +payload.y+"].";
+ 			let movesDS = [];
+			for(var i = 0; i<ds.getRowCount(); i++){
+				movesDS.push(ds.getRowData(0,i));
+			}
+			movesDS.push({text: movement});
+			ds= ds.cloneWithRows(movesDS);
  			TresEnRayaStore.emitChange();
 			break;
 		case Constants.ActionTypes.REINICIAR_JUEGO:
@@ -163,6 +173,7 @@ TresEnRayaDispatcher.register(function(payload) {
 		    empate = false;
 		    valoresTablero = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']];
 		    moves = 0;
+		   	ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		    TresEnRayaStore.emitChange();
 		    break;
 		case Constants.ActionTypes.SAVE_JUEGO:

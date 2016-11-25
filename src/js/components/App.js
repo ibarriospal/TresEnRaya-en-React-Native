@@ -23,19 +23,6 @@ var App = React.createClass({
 	onComponentMount : function(){
   	
 	},
-  	getInitialState: function(){
-	  	return ({
-	      Turno: '',
-	      Moves: '',
-	      outputMessage: '',
-	    });
-	},
-  	appendMessage: function(newMessage){
-    	var currentMessage = this.state.outputMessage;
-    	this.setState({
-    		outputMessage : this.state.outputMessage + "-" + newMessage
-    	});
-  	},
 	getInitialState: function(){
 		return getAppStateFromStore()
 	},
@@ -76,25 +63,11 @@ var App = React.createClass({
 						navigator.pop();
 					} 
 				}
-				var onSave = function(){ 
-					if (route.index = 1){ 
-						this.saveData;
-						alert("SAVE"); 
-					}
-				}
-				var onLoad = function(){
-					const nextIndex = route.index + 1; 
-					if(typeof routes[nextIndex] == "object"){
-						this.loadData;
-						this.setState(TresEnRayaStore.getValores());
-						alert("LOAD"); 
-					}
-				}
 				switch(route.index){ 
 					case 0:
-						return <IndexScene onForward={onForward} onBack={onBack} onLoad={onLoad} /> 
+						return <IndexScene onForward={onForward} onBack={onBack} /> 
 					case 1:
-						return <PartidaScene onForward={onForward} onBack={onBack} onSave={onSave} onLoad={onLoad}/> 
+						return <PartidaScene onForward={onForward} onBack={onBack}/> 
 				}
 			}} 
 		/>
