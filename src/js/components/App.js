@@ -1,6 +1,5 @@
 import React, { Component } from 'react'; 
-import { View, Text} from 'react-native';
-import { Navigator } from 'react-native';
+import { View, Text, Navigator, AppRegistry, AsyncStorage,StyleSheet, TouchableOpacity} from 'react-native';
 
 const Cabecera = require('./Cabecera');
 const Tablero = require('./Tablero');
@@ -21,6 +20,22 @@ function getAppStateFromStore() {
 }
 
 var App = React.createClass({
+	onComponentMount : function(){
+  	
+	},
+  	getInitialState: function(){
+	  	return ({
+	      Turno: '',
+	      Moves: '',
+	      outputMessage: '',
+	    });
+	},
+  	appendMessage: function(newMessage){
+    	var currentMessage = this.state.outputMessage;
+    	this.setState({
+    		outputMessage : this.state.outputMessage + "-" + newMessage
+    	});
+  	},
 	getInitialState: function(){
 		return getAppStateFromStore()
 	},
@@ -57,16 +72,30 @@ var App = React.createClass({
 					}
 				}
 				var onBack = function(){
-				if (route.index > 0){ 
-					navigator.pop();
-				} 
-			}
-			switch(route.index){ 
-				case 0:
-					return <IndexScene onForward={onForward} onBack={onBack} /> 
-				case 1:
-					return <PartidaScene onForward={onForward} onBack={onBack} /> 
-			}
+					if (route.index = 1){ 
+						navigator.pop();
+					} 
+				}
+				var onSave = function(){ 
+					if (route.index = 1){ 
+						this.saveData;
+						alert("SAVE"); 
+					}
+				}
+				var onLoad = function(){
+					const nextIndex = route.index + 1; 
+					if(typeof routes[nextIndex] == "object"){
+						this.loadData;
+						this.setState(TresEnRayaStore.getValores());
+						alert("LOAD"); 
+					}
+				}
+				switch(route.index){ 
+					case 0:
+						return <IndexScene onForward={onForward} onBack={onBack} onLoad={onLoad} /> 
+					case 1:
+						return <PartidaScene onForward={onForward} onBack={onBack} onSave={onSave} onLoad={onLoad}/> 
+				}
 			}} 
 		/>
 		)

@@ -9,6 +9,11 @@ var ganador = false;
 var empate = false;
 var moves = 0;
 
+var turno1 = Constants.JUGADORX;
+var valoresTablero1 = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']];
+var ganador1 = false;
+var empate1 = false;
+var moves1 = 0;
 
 function checkWinner (values, nuevoValor) {
 	//Compruebo filas
@@ -126,6 +131,20 @@ var TresEnRayaStore = Object.assign({}, EventEmitter.prototype, {
  			empate: empate,
  			moves: moves
  		);
+ 	},
+ 	setState(ganador,empate,moves) {
+ 		//turno = turno;
+ 		//valoresTablero = valoresTablero;
+ 		ganador = ganador;
+ 		empate = empate;
+ 		moves = moves;
+ 	},
+ 	reiniciar() {
+ 		turno = Constants.JUGADORX;
+		valoresTablero = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']];
+		ganador = false;
+		empate = false;
+		moves = 0;
  	}
 });
 

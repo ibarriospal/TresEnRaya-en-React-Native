@@ -13,13 +13,13 @@ var MyButton = React.createClass({
 
 const styles = StyleSheet.create({ 
 	mybutton: {
-	padding: 10,
-	margin: 20,
-	fontSize: 25, 
-	backgroundColor: 'white', 
-	color: 'black', 
-	borderWidth: 3, 
-	borderColor: 'black'
+		padding: 5,
+		margin: 20,
+		fontSize: 15, 
+		backgroundColor: 'white', 
+		color: 'black', 
+		borderWidth:1, 
+		borderColor: 'black'
 	} 
 });
 
